@@ -111,3 +111,13 @@ npm install @tsconfig/node22@latest @types/jsdom@latest @types/node@latest @vue/
 ```bash
 npm start
 ```
+
+## Documentation
+
+[Electron Forge + Vite Template](https://www.electronforge.io/templates/vite-+-typescript)
+
+[Electron Forge Framework Integration with Vue 3](https://www.electronforge.io/guides/framework-integration/vue-3)
+
+[Electron Forge Plugin Vite](https://www.electronforge.io/config/plugins/vite)
+
+[Vue 3 Quick Start Guide](https://vuejs.org/guide/quick-start.html)
