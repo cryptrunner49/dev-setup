@@ -1,0 +1,113 @@
+# Setting up Electron + JavaScript + Vite + Vue
+
+## Creating the Electron project
+
+```bash
+npx create-electron-app@latest {project_name} --template=vite
+cd {project_name}
+npm install
+npm install vue
+npm install --save-dev @vitejs/plugin-vue
+```
+
+## Creating the Vue project
+
+```bash
+npm create vue@latest
+```
+
+### Vue project options
+
+```bash
+✔ Project name: vue
+✔ Add TypeScript? No
+✔ Add JSX Support? No
+✔ Add Vue Router for Single Page Application development? … No
+✔ Add Pinia for state management? … Yes
+✔ Add Vitest for Unit Testing? … Yes
+✔ Add an End-to-End Testing Solution? › No
+✔ Add ESLint for code quality? › Yes
+✔ Add Prettier for code formatting? … Yes
+```
+
+## Moving files to fix the project structure
+
+```bash
+mv src electron
+cd vue
+mv public/ ../
+mv .vscode/ ../
+mv src/ ../
+mv .gitattributes ../
+mv .prettierrc.json ../
+```
+
+## Replace everything in 'vite.renderer.config.mjs' with the code
+
+```javascript
+import { fileURLToPath, URL } from "node:url";
+
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueDevTools from "vite-plugin-vue-devtools";
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [vue(), vueDevTools()],
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});
+```
+
+```javascript
+<h1>💖 Hello World!</h1>
+<p>Welcome to your Electron application.</p>
+```
+
+## Replace the above code in index.html with the following code
+
+```javascript
+<div id="app"></div>
+```
+
+## And change the 'src' in the following code to electron
+
+```html
+<script type="module" src="/src/renderer.js"></script>
+```
+
+```html
+<script type="module" src="/electron/renderer.js"></script>
+```
+
+## In 'forge.config.js' change the path 'src/main.ts' to 'electron/main.js'
+
+## And change 'src/preload.js' to 'electron/preload.js'
+
+## Add to the end of the file electron/renderer.js
+
+```typescript
+import { createApp } from "vue";
+import App from "../src/App.vue";
+
+createApp(App).mount("#app");
+```
+
+```bash
+cd ..
+
+npm install pinia
+
+npm install typescript@latest eslint@latest eslint-plugin-vue@latest @vitest/eslint-plugin@latest @vue/tsconfig@latest @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest @vue/eslint-config-typescript@latest
+
+npm install @tsconfig/node22@latest @types/jsdom@latest @types/node@latest @vue/eslint-config-prettier@latest @vue/test-utils@latest jiti@latest jsdom@latest npm-run-all2@latest prettier@latest vite-plugin-vue-devtools@latest vitest@latest vue-tsc@latest
+```
+
+## Starting the app
+
+```bash
+npm start
+```
