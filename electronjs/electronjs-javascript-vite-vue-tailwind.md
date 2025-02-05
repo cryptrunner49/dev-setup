@@ -1,9 +1,9 @@
-# Setting up Electron + TypeScript + Vite + Vue
+# Setting up Electron + JavaScript + Vite + Vue + Tailwind
 
 ## Creating the Electron project
 
 ```bash
-npx create-electron-app@latest {project_name} --template=vite-typescript
+npx create-electron-app@latest {project_name} --template=vite
 cd {project_name}
 npm install
 npm install vue
@@ -20,7 +20,7 @@ npm create vue@latest
 
 ```bash
 ✔ Project name: vue
-✔ Add TypeScript? Yes
+✔ Add TypeScript? No
 ✔ Add JSX Support? No
 ✔ Add Vue Router for Single Page Application development? … No
 ✔ Add Pinia for state management? … Yes
@@ -42,9 +42,9 @@ mv .gitattributes ../
 mv .prettierrc.json ../
 ```
 
-## Replace everything in 'vite.renderer.config.ts' with the code
+## Replace everything in 'vite.renderer.config.mjs' with the code
 
-```typescript
+```javascript
 import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
@@ -62,32 +62,32 @@ export default defineConfig({
 });
 ```
 
-```typescript
+```javascript
 <h1>💖 Hello World!</h1>
 <p>Welcome to your Electron application.</p>
 ```
 
 ## Replace the above code in index.html with the following code
 
-```typescript
+```javascript
 <div id="app"></div>
 ```
 
 ## And change the 'src' in the following code to electron
 
 ```html
-<script type="module" src="/src/renderer.ts"></script>
+<script type="module" src="/src/renderer.js"></script>
 ```
 
 ```html
-<script type="module" src="/electron/renderer.ts"></script>
+<script type="module" src="/electron/renderer.js"></script>
 ```
 
-## In 'forge.config.ts' change the path 'src/main.ts' to 'electron/main.ts'
+## In 'forge.config.js' change the path 'src/main.ts' to 'electron/main.js'
 
-## And change 'src/preload.ts' to 'electron/preload.ts'
+## And change 'src/preload.js' to 'electron/preload.js'
 
-## Add to the end of the file electron/renderer.ts
+## Add to the end of the file electron/renderer.js
 
 ```typescript
 import { createApp } from "vue";
@@ -106,6 +106,101 @@ npm install typescript@latest eslint@latest eslint-plugin-vue@latest @vitest/esl
 npm install @tsconfig/node22@latest @types/jsdom@latest @types/node@latest @vue/eslint-config-prettier@latest @vue/test-utils@latest jiti@latest jsdom@latest npm-run-all2@latest prettier@latest vite-plugin-vue-devtools@latest vitest@latest vue-tsc@latest
 ```
 
+## Integrating tailwind into electron
+
+Install tailwindcss and its peer dependencies, then generate your tailwind.config.js and postcss.config.js files.
+
+```bash
+npm install -D tailwindcss@3 postcss autoprefixer
+
+npx tailwindcss init -p
+```
+
+## Configure your template paths
+
+Add the paths to all of your template files in your tailwind.config.js file.
+
+### tailwind.config.js
+
+```javascript
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## Add the Tailwind directives to your CSS
+
+Add the @tailwind directives for each of Tailwind’s layers to your ./src/assets/main.css file.
+
+### main.css
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## Import the css in the renderer.js
+
+```javascript
+import '../src/assets/main.css';
+```
+
+## Test tailwind
+
+### App.vue
+
+```html
+<template>
+  <h1 class="text-3xl font-bold underline">
+    Hello world!
+  </h1>
+</template>
+```
+
+## Installing Express, Sequelize and sqlite3
+
+```bash
+npm install express sequelize sqlite3
+```
+
+## Add to main.js
+
+```javascript
+import express from 'express';
+const expressServer = express();
+
+expressServer.get('/', function (req, res) {
+  res.send('Hello World');
+});
+expressServer.listen(3500);
+
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: path.join(__dirname, '../database.sqlite')
+});
+```
+
+## Add to the createWindow function in main.js
+
+```javascript
+try {
+  await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
+```
+
 ## Starting the app
 
 ```bash
@@ -121,3 +216,5 @@ npm start
 [Electron Forge Plugin Vite](https://www.electronforge.io/config/plugins/vite)
 
 [Vue 3 Quick Start Guide](https://vuejs.org/guide/quick-start.html)
+
+[tailwindcss with Vite and Vue](https://v3.tailwindcss.com/docs/guides/vite#vue)
