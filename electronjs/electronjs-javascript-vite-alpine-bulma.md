@@ -43,7 +43,7 @@ npm install bulma
 ## And import bulma in the index.css
 
 ```css
-@import 'bulma/css/bulma.css'
+@import 'bulma/css/bulma.css';
 ```
 
 ## Installing Express, Sequelize and sqlite3
