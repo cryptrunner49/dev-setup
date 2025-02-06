@@ -3,8 +3,8 @@
 ## Creating the Electron project
 
 ```bash
-npx create-electron-app@latest {project_name} --template=vite-typescript
-cd {project_name}
+npx create-electron-app@latest my-app --template=vite-typescript
+cd my-app
 npm install
 npm install vue
 npm install --save-dev @vitejs/plugin-vue
