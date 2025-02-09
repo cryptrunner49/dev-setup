@@ -1,5 +1,14 @@
 {
     "cSpell.words": [
-        "htmx"
+        "djangorestframework",
+        "djangotutorial",
+        "htmx",
+        "mysite",
+        "pytz",
+        "runserver",
+        "sqlparse",
+        "startproject",
+        "tzdata",
+        "venv"
     ]
 }
